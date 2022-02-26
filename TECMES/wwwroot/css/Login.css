@@ -1,0 +1,11 @@
+﻿body {
+    background: url("../assets/industria.jpg") no-repeat center center fixed;
+    background-size: cover !important;
+}
+
+.btn-login {
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+    padding: 12px;
+    font-weight:bold;
+}

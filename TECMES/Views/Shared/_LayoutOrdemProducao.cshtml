@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TECMES</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="~/css/Menu.css" rel="stylesheet" />
+</head>
+
+@{
+
+    <body>
+        <div class="page-wrapper chiller-theme toggled">
+            <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+                <i class="fas fa-bars"></i>
+            </a>
+            <nav id="sidebar" class="sidebar-wrapper">
+                <div class="sidebar-content">
+                    <div class="sidebar-brand">
+                        <a href="#">TECMES</a>
+                        <div id="close-sidebar">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                    <div class="sidebar-header">
+
+                        <div class="user-info">
+                            <span class="user-name">
+                                @Context.Request.Cookies["Email"]
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <!-- items do menu  -->
+                    <div class="sidebar-menu">
+                        <br />
+                        <ul>
+
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="fa fa-list"></i>
+                                    <span>Ordens de Produção</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="@Url.Action("Pedidos","OrdemProducao")">
+                                                Ordens de Produção
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li>
+                                <a href="@Url.Action("Sair","Usuarios")">
+                                    <i class="fa fa-sign-out"></i>
+                                    <span>Sair</span>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- sidebar-menu  -->
+                </div>
+                <!-- sidebar-content  -->
+                <div class="sidebar-footer">
+
+                </div>
+            </nav>
+            <!-- conteudo da pagina  -->
+            <main class="page-content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+        <script src="~/js/Menu.js"></script>
+        @RenderSection("Scripts", required: false)
+
+    </body>
+
+}
+
+</html>

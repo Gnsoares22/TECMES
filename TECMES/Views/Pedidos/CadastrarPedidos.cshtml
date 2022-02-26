@@ -1,0 +1,63 @@
+﻿@model TECMES.Models.Pedido
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Views/Shared/_LayoutPedido.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Criar Pedidos</title>
+</head>
+<body>
+    <br />
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Registrar Pedidos</h5>
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="CadastrarPedidos">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="ProdutoID" class="control-label">Produto</label>
+                            <select asp-for="ProdutoID" class="form-control" asp-items="ViewBag.ProdutoID"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ClienteID" class="control-label">Cliente</label>
+                            <select asp-for="ClienteID" class="form-control" asp-items="ViewBag.ClienteID"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Quantidade" class="control-label">Quantidade (KG) </label>
+                            <input asp-for="Quantidade" id="quantidade" class="form-control" />
+                            <span asp-validation-for="Quantidade" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <input type="submit" value="Efetuar Pedido" class="btn btn-success btn-lg btn-block btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+
+        @if (!string.IsNullOrEmpty(ViewBag.Success))
+        {
+            <script type="text/javascript">
+                toastr.success("@ViewBag.Success");
+                document.getElementById("quantidade").value = "";
+            </script>
+        }
+
+    }
+
+</body>
+</html>

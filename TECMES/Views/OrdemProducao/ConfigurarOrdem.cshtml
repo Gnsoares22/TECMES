@@ -1,0 +1,219 @@
+﻿@model TECMES.Models.OrdemProducao
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Views/Shared/_LayoutProducao.cshtml";
+}
+
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title"><strong>Configurar Ordem n° @Model.Id </strong></h5>
+        <hr />
+        <a class="btn btn-primary" asp-action="ListaOrdens"><i class="fa fa-arrow-left"></i> Voltar </a>
+        <br />
+        <br />
+
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="ConfigurarOrdem">
+
+                    <div class="col">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="col-md-8">
+                            <label asp-for="PedidoID" class="control-label"></label>
+                            <select asp-for="PedidoID" disabled class="form-control" asp-items="ViewBag.PedidoID"></select>
+                            <span asp-validation-for="PedidoID" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="StatusID" class="control-label"></label>
+                            <select asp-for="StatusID" class="form-control" disabled asp-items="ViewBag.StatusID"></select>
+                            <span asp-validation-for="StatusID" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <br />
+
+                    <div class="form-row">
+
+                        <div class="col-md-4">
+                            <label asp-for="pedido.Quantidade" class="control-label"></label>
+                            <input asp-for="pedido.Quantidade" disabled class="form-control" />
+                        </div>
+
+                        <br />
+                    </div>
+
+                    <br />
+                    <h6> Ordem </h6>
+                    <hr />
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <label asp-for="quantidade" class="control-label"></label>
+                            <input asp-for="quantidade" value="@ViewBag.Soma" class="form-control" />
+                            <span asp-validation-for="quantidade" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="ProdutoID" class="control-label"></label>
+                            <select asp-for="ProdutoID" disabled class="form-control" asp-items="ViewBag.ProdutoID"></select>
+                            <span asp-validation-for="ProdutoID" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="MaquinaID" class="control-label"></label>
+                            <select asp-for="MaquinaID" class="form-control" asp-items="ViewBag.MaquinaID"></select>
+                            <span asp-validation-for="MaquinaID" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <br />
+                    <h6>Sequênciamento da Ordem</h6>
+                    <hr />
+                    <button type="button" data-toggle="modal" data-target="#modalSequenciamento" class="btn btn-primary"><i data-toggle="tooltip" data-placement="bottom" title="Adicionar Sequência" class="fa fa-plus"></i></button>
+                    <br />
+                    <br />
+
+                    <table class="table text-center table-hover table-responsive-lg">
+                        <thead>
+                            <tr>
+                                <th>Seq. Numero</th>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.ListaSequencia as List<TECMES.Models.OrdemProducaoSequencia>)
+                            {
+                                <tr>
+                                    <td><strong> @item.NumeroSequencia </strong></td>
+                                    <td> @item.produto.Nome </td>
+                                    <td> @item.Quantidade </td>
+                                    <td> <button class="btn btn-danger btnDeletar" data-id="@item.NumeroSequencia" data-toggle="tooltip" data-placement="bottom" title="Remover Sequência"><i class="fa fa-trash"></i></button> </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="form-group">
+                        <input type="submit" value="Salvar O.P" class="btn btn-success btn-lg btn-block btn-primary" />
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalSequenciamento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Sequência</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <label class="control-label">Produto da Ordem</label>
+                    <select class="form-control">
+                        <option value="@Model.ProdutoID"> @Model.produtos.Nome </option>
+                    </select>
+                    <span class="text-danger"></span>
+                    <br />
+                    <label> Quantidade </label>
+                    <div>
+                        <input type="text" class="form-control" id="qtdSeq" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                    <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+
+        @if (!string.IsNullOrEmpty(ViewBag.Success))
+        {
+
+            <script type="text/javascript">
+                toastr.success("@ViewBag.Success");
+
+            </script>
+
+        }
+        else if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <script type="text/javascript">
+                toastr.error("@ViewBag.Error");
+
+            </script>
+        }
+
+        
+        <script type="text/javascript">
+
+            //Simulação de envios com Ajax sem que tenha loads na página
+
+            $(document).ready(function () {
+
+
+                $("#btnSalvar").click(function () {
+
+                    var qtd = document.getElementById("qtdSeq").value;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("SalvarItensOP", "OrdemProducao")",
+                        data: { id: @Model.Id, produto: @Model.ProdutoID, quantidade: qtd },
+                        success: function (data) {
+                        document.getElementById("qtdSeq").value = "";
+                        document.location.reload(true);
+                        toastr.success("Sequencia salva com sucesso !!")
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                         toastr.success("Erro !!")
+                        }
+                    });
+
+                });
+
+                $(".btnDeletar").click(function () {
+                    var codSeq = $(this).attr("data-id");
+                     $.ajax({
+                        type: "POST",
+                         url: "@Url.Action("DeletarSequencia", "OrdemProducao")",
+                         data: { numSeq: parseInt(codSeq), idOrdem: @Model.Id },
+                         success: function (data) {
+                             document.location.reload(true);
+                             toastr.success("Sequencia removida com sucesso !!")
+                        },
+                         error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                             toastr.error("Erro !!")
+                         }
+                     });
+                });
+
+                $('[data-toggle="tooltip"]').tooltip();
+
+            });
+
+        </script>
+
+
+    }
+
+</div>
+
+

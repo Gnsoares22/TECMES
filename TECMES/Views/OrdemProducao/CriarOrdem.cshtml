@@ -1,0 +1,64 @@
+﻿@model TECMES.Models.OrdemProducao
+
+@{
+    Layout = "~/Views/Shared/_LayoutOrdemProducao.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<br />
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Registrar Ordem de Producao</h5>
+        <hr />
+        <a class="btn btn-primary" asp-action="Pedidos"><i class="fa fa-arrow-left"></i> Voltar </a>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="CriarOrdem">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="ProdutoID" class="control-label"></label>
+                        <select asp-for="ProdutoID" class="form-control" asp-items="ViewBag.ProdutoID"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StatusID" class="control-label"></label>
+                        <select asp-for="StatusID" class="form-control" asp-items="ViewBag.StatusID"></select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="PedidoID" class="control-label"></label>
+                        <select asp-for="PedidoID" class="form-control" asp-items="ViewBag.PedidoID"></select>
+                        <span asp-validation-for="PedidoID" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success btn-lg btn-block" value="Criar Ordem" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    @if (!string.IsNullOrEmpty(ViewBag.Success))
+    {
+        <script type="text/javascript">
+             toastr.success("@ViewBag.Success");
+        </script>
+    }
+    else if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <script type="text/javascript">
+             toastr.error("@ViewBag.Error");
+        </script>
+    }
+
+}
+

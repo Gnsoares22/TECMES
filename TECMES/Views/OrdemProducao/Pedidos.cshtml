@@ -1,0 +1,121 @@
+﻿@model IEnumerable<TECMES.Models.OrdemProducao>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Views/Shared/_LayoutOrdemProducao.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Ordens de Produção</h5>
+        <hr />
+        <br />
+        <a class="btn btn-warning" asp-action="CriarOrdem"><i class="fa fa-plus"></i> Abrir Ordem de Produção</a>
+
+        <br />
+        <br />
+
+        <table id="tabela" class="table text-center table-hover table-responsive-lg">
+            <thead>
+                <tr>
+                    <th>
+                        Número da Ordem
+                    </th>
+                    <th>
+                        Produto Requisitado
+                    </th>
+                    <th>
+                        Status da O.P
+                    </th>
+                    <th>
+                        Descrição do Pedido
+                    </th>
+                    <th>
+                        Qtd. Solicitada (Kg)
+                    </th>
+                    <th>
+                        Ação
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>#@item.Id</strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.produtos.Nome)
+                        </td>
+
+                        @if (item.status.Status == "Liberada para Produção")
+                        {
+                            <td>
+                                <span class="text-success"> @Html.DisplayFor(modelItem => item.status.Status)</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <span class="text-danger"> @Html.DisplayFor(modelItem => item.status.Status) </span>
+                            </td>
+                        }
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.pedido.Descricao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.pedido.Quantidade)
+                        </td>
+                        <td>
+                            <a asp-action="AlterarOrdemStatus" class="btn btn-warning" asp-route-id="@item.Id">Alterar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tabela').DataTable({
+                language: {
+                    search: '_INPUT_',
+                    searchPlaceholder: 'Pesquise aqui',
+                    lengthMenu: "_MENU_",
+                    zeroRecords: "Sem dados a exibir",
+                    infoEmpty: "Exibindo página 0 de 0",
+                    info: "Exibindo página _PAGE_ de _PAGES_",
+                    infoFiltered: "Filtrado de _MAX_ resultados totais",
+                    infoEmpty: "Exibindo 0 de 0 de 0 Entradas",
+                    loadingRecords: "Carregando...",
+                    processing: "Processando...",
+                    decimal: ",",
+                    thousands: ".",
+                    paginate: {
+                        "next": "Próximo",
+                        "previous": "Anterior",
+                        "first": "Primeiro",
+                        "last": "Último"
+                    },
+                    select: {
+                        rows: "%d linhas selecionadas",
+                    },
+                    buttons: {
+                        selectAll: "Selecionar todos",
+                        selectNone: "Desmarcar todos"
+                    },
+                    aria: {
+                        sortAscending: "Ativar ordenação de coluna crescente",
+                        sortDescending: "Ativar ordenação de coluna decrescente"
+                    },
+
+                }});
+        });
+    </script>
+
+}

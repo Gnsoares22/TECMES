@@ -1,0 +1,121 @@
+﻿@model IEnumerable<TECMES.Models.Pedido>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Faturamento";
+    Layout = "~/Views/Shared/_LayoutPedido.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Lista de Pedidos para Faturar</title>
+</head>
+<body>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Pedidos Registrados</h5>
+            <hr />
+            <table id="tabela" class="table table-hover table-responsive-lg text-center">
+                <thead>
+                    <tr>
+                        <th>
+                            Número do Pedido
+                        </th>
+                        <th>
+                            Pedido
+                        </th>
+                        <th>
+                            Cliente
+                        </th>
+                        <th>
+                            Quantidade Solicitada
+                        </th>
+                        <th>
+                            N° Ordem Produção
+                        </th>
+                        <th>
+                            Ação
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong> #PEDIDO - @Html.DisplayFor(modelItem => item.Id)</strong>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.produto.Nome)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.cliente.Nome)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantidade)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ordemProducao.Where(op => op.PedidoID == item.Id).Select(x => new { x.Id }).FirstOrDefault().Id)
+                            </td>
+                            <td>
+                                <a class="btn btn-info" asp-controller="OrdemProducao" asp-action="VisualizarOP" asp-route-id="@item.ordemProducao.Where(op => op.PedidoID == item.Id).Select(x => new { x.Id }).FirstOrDefault().Id">Visualizar O.P</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    @section Scripts {
+
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tabela').DataTable({
+                language: {
+                    search: '_INPUT_',
+                    searchPlaceholder: 'Pesquise aqui',
+                    lengthMenu: "_MENU_",
+                    zeroRecords: "Sem dados a exibir",
+                    infoEmpty: "Exibindo página 0 de 0",
+                    info: "Exibindo página _PAGE_ de _PAGES_",
+                    infoFiltered: "Filtrado de _MAX_ resultados totais",
+                    infoEmpty: "Exibindo 0 de 0 de 0 Entradas",
+                    loadingRecords: "Carregando...",
+                    processing: "Processando...",
+                    decimal: ",",
+                    thousands: ".",
+                    paginate: {
+                        "next": "Próximo",
+                        "previous": "Anterior",
+                        "first": "Primeiro",
+                        "last": "Último"
+                    },
+                    select: {
+                        rows: "%d linhas selecionadas",
+                    },
+                    buttons: {
+                        selectAll: "Selecionar todos",
+                        selectNone: "Desmarcar todos"
+                    },
+                    aria: {
+                        sortAscending: "Ativar ordenação de coluna crescente",
+                        sortDescending: "Ativar ordenação de coluna decrescente"
+                    },
+
+                }
+            });
+        });
+        </script>
+
+    }
+
+</body>
+</html>
+
+
